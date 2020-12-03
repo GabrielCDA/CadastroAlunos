@@ -1,0 +1,88 @@
+﻿@*@model EE.MatriculaAluno.UI.Models.MensagemSucesso*@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Controle de Alunos</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+
+    @if (Request.IsAuthenticated)
+    {
+
+        <h1>Criação de Alunos</h1>
+        <div class="row">
+            <div class="col-lg-1">
+                @using (Html.BeginForm("InserirAlunos", "Conta", FormMethod.Post, new { id = "insereForm" }))
+                {
+                    <button class="btn btn-primary" onclick="Alerta()">Botão 1</button>
+                }
+            </div>
+            <div class="col-lg-1">
+                @using (Html.BeginForm("GerarExcel", "Conta", FormMethod.Post, new { id = "excelForm" }))
+                {
+                    <button class="btn btn-primary">Botão 2</button>
+                }
+            </div>
+        </div>
+
+        <div>
+            <p>
+                @using (Html.BeginForm("LogOff", "Conta", FormMethod.Post, new { id = "logoffForm" }))
+                {
+                    <a href="javascript:document.getElementById('logoffForm').submit()" class="btn btn-primary">Logoff</a>
+                }
+            </p>
+        </div>
+
+        if (ViewBag.MensagemSucesso != null)
+        {
+            if (ViewBag.MensagemSucesso == "Excel Gerado com Sucesso")
+            {
+                <div><p><b>@ViewBag.MensagemSucesso</b></p></div>
+
+                <div>
+                    <button class="btn btn-primary" onclick="Download()">Download Excel</button>
+                </div>
+            }
+            else
+            {
+                <div><p><b>@ViewBag.MensagemSucesso</b></p></div>
+            }
+        }
+    }
+    else
+    {
+        @*@Html.ActionLink("Login", "Login", "Conta")*@
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Controle de Alunos</p>
+            </footer>
+        </div>
+    }
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
+<script>
+
+    function Alerta() {
+
+        window.alert("Gerando dados - Aguarde")       
+    }
+
+    function Download() {
+        window.open("C:/ControleAlunos/Alunos.xlsx");
+    }
+
+</script>
